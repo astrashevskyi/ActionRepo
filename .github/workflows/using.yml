@@ -2,9 +2,13 @@ name: using-flow
 
 on:
   workflow_dispatch:
+    inputs:
+      username:
+        type: string
+        required: true
 
 jobs:
   call-workflow:
     uses: ./.github/workflows/reusable.yml
     with:
-      username: Anton
+      username: ${{ inputs.username }}
