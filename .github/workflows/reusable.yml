@@ -1,0 +1,17 @@
+name: base-flow
+
+on:
+  workflow_call:
+    inputs:
+      username:
+        default: 'john-doe'
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run a one-line script
+        run: echo ${{ inputs.username }}
