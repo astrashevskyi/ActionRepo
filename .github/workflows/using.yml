@@ -2,13 +2,15 @@ name: using-flow
 
 on:
   workflow_dispatch:
-    inputs:
-      username:
-        type: string
-        required: true
 
 jobs:
   call-workflow:
+    strategy:
+      matrix:
+        include:
+          - username: Anton
+          - username: Vasya
+          - username: Oleh
     uses: ./.github/workflows/reusable.yml
     with:
-      username: ${{ inputs.username }}
+      username: ${{ matrix.username }}
