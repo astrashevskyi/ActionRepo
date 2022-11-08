@@ -2,6 +2,10 @@ name: using-flow
 
 on:
   workflow_dispatch:
+    inputs:
+      username:
+        type: string
+        required: true
 
 jobs:
   call-workflow:
