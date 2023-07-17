@@ -31,6 +31,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           name: Test XYZ
           conclusion: ${{ job.status }}
-          sha: ${{env.GITHUB_SHA}}
+          sha: 05418b83ecf666008390e64f83a2ddbef7d7452c
           output: |
             {"summary":"${{ steps.test.outputs.summary }}"}
