@@ -11,6 +11,13 @@ on:
         required: true
         default: default_value
 
+permissions:
+  id-token: write
+  actions: write
+  contents: read
+  pull-requests: write
+  checks: write
+
 jobs:
   run-workflow:
     if: contains(github.event.comment.body, '/test')
