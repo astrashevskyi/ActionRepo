@@ -45,7 +45,8 @@ jobs:
 
       - name: "Execute test"
         run: |
-          echo "test executed"
+          exit 1
+#          echo "test executed"
 
       - name: Set latest commit status as ${{ job.status }}
         uses: myrotvorets/set-commit-status-action@master
