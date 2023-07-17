@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   run-workflow:
-    if: contains(github.event.comment.body, '/test')
+#    if: contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
       - run: |
