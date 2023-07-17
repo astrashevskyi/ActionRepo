@@ -1,9 +1,9 @@
 name: workflow-1
 
 on:
-  pull_request:
-    branches:
-      - main
+#  pull_request:
+#    branches:
+#      - main
   issue_comment:
     types: [created]
   workflow_dispatch:
@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   run-workflow-1:
-#    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
       - name: Get PR branch
