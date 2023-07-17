@@ -3,9 +3,6 @@ name: using-flow
 on:
   issue_comment:
     types: [created]
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       arg:
@@ -28,3 +25,11 @@ jobs:
     steps:
       - run: |
           echo "test executed"
+      - uses: LouisBrunner/checks-action@v1.6.1
+        if: always()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Test XYZ
+          conclusion: ${{ job.status }}
+          output: |
+            {"summary":"${{ steps.test.outputs.summary }}"}
