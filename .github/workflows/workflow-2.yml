@@ -21,7 +21,7 @@ permissions:
   statuses: write
 
 jobs:
-  run-workflow:
+  run-workflow-2:
     runs-on: ubuntu-latest
     steps:
       - name: "Execute some task"
