@@ -1,17 +1,20 @@
 name: using-flow
 
 on:
-  pull_request:
-    branches:
-      - main
+  issue_comment:
+    types: [created]
   workflow_dispatch:
     inputs:
-      username:
+      arg:
         type: string
+        description: a workflow input
         required: true
+        default: default_value
 
 jobs:
-  call-workflow:
-    uses: ./.github/workflows/reusable.yml
-    with:
-      username: ${{ inputs.username }}
+  run-workflow:
+    if: contains(github.event.comment.body, '/test')
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "test executed"
