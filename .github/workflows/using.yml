@@ -22,7 +22,12 @@ jobs:
   run-workflow:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: "Execute test"
+        run: |
           echo "test executed"
-      - run: |
+      - name: "Create Check with API"
+        run: |
           curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/${{ github.repository }}/check-runs -d '{"name":"mighty_readme","head_sha":"${{github.sha}}","status":"completed","conclusion":"success","output":{"title":"Mighty Readme report","summary":"","text":""}}'
+      - name: "Create Commit Status with API"
+        run: |
+          curl -L -X POST -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/${{ github.repository }}/statuses/${{github.sha}} -d '{"state":"success","target_url":"https://example.com/build/status","description":"The build succeeded!","context":"continuous-integration/jenkins"}'
