@@ -77,7 +77,7 @@ jobs:
         if: always()
         with:
           script: |
-            await octokit.rest.checks.create({
+            await github.rest.checks.create({
               repo: context.repo.repo,
               name: 'Custom Check run',
               head_sha: context.sha,
