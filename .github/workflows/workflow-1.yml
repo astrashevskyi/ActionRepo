@@ -23,7 +23,7 @@ permissions:
   statuses: write
 
 jobs:
-  run-workflow:
+  run-workflow-1:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
@@ -45,7 +45,8 @@ jobs:
 
       - name: "Execute test"
         run: |
-          echo "test executed"
+          exit 1
+#          echo "test executed"
 
       - name: Set latest commit status as ${{ job.status }}
         uses: myrotvorets/set-commit-status-action@master
@@ -54,19 +55,36 @@ jobs:
           sha: ${{ steps.comment-branch.outputs.head_sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
-      - name: Add comment to PR
+#      - name: Add comment to PR
+#        uses: actions/github-script@v6
+#        if: always()
+#        with:
+#          script: |
+#            const name = '${{ github.workflow   }}';
+#            const url = '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}';
+#            const success = '${{ job.status }}' === 'success';
+#            const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
+#
+#            await github.rest.issues.createComment({
+#              issue_number: context.issue.number,
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              body: body
+#            })
+
+      - name: Add Check run
         uses: actions/github-script@v6
         if: always()
         with:
           script: |
-            const name = '${{ github.workflow   }}';
-            const url = '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}';
-            const success = '${{ job.status }}' === 'success';
-            const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
-            
-            await github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
+            await octokit.rest.checks.create({
               repo: context.repo.repo,
-              body: body
+              name: 'Custom Check run',
+              head_sha: context.sha,
+              status: 'completed',
+              conclusion: 'success',
+              output: {
+                title: 'title',
+                summary: 'summary'
+              }
             })
