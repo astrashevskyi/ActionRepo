@@ -71,3 +71,20 @@ jobs:
 #              repo: context.repo.repo,
 #              body: body
 #            })
+
+      - name: Add Check run
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          script: |
+            await octokit.rest.checks.create({
+              repo: context.repo.repo,
+              name: 'Custom Check run',
+              head_sha: context.sha,
+              status: 'completed',
+              conclusion: 'success',
+              output: {
+                title: 'title',
+                summary: 'summary'
+              }
+            })
