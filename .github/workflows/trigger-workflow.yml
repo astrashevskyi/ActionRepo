@@ -1,4 +1,5 @@
 name: trigger-workflow
+run-name: "PR commands processing"
 
 on:
   issue_comment:
@@ -9,7 +10,6 @@ permissions:
 
 jobs:
   dispatch-workflow:
-    name: "PR commands processing"
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
