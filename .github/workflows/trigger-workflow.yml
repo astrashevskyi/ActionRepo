@@ -9,7 +9,7 @@ permissions:
   actions: write
 
 env:
-  REF: ${{ github.event.issue.pull_request.head.ref }}
+  REF: ${{ github.event.issue.number }}
 
 jobs:
   dispatch-test-workflow:
