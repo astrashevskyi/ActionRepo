@@ -3,7 +3,7 @@ run-name: "Workflow completion processing"
 
 on:
   workflow_run:
-    workflows: ["workflow-1"]
+    workflows: ["workflow"]
     types:
       - completed
 
