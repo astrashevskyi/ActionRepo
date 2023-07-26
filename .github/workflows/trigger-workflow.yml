@@ -21,7 +21,7 @@ jobs:
             const pr = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: github.event.issue.number
+              pull_number: ${{ github.event.issue.number }}
             });
             return pr.head.ref;
           result-encoding: string
