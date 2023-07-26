@@ -2,27 +2,26 @@ name: trigger-workflow
 run-name: "PR commands processing"
 
 on:
+  pull_request:
+    types: [opened]
   issue_comment:
-    types: [ created ]
+    types: [created]
 
 permissions:
   actions: write
 
 jobs:
   dispatch-workflow:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR branch
-        uses: xt0rted/pull-request-comment-branch@v1
-        id: comment-branch
-      - name: Dispatch event for workflow-1.yml
-        uses: actions/github-script@v6
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check
         with:
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: "workflow-1.yml",
-              ref: "main"
-            });
+          trigger: '@test'
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - Do something
+        if: steps.check.outputs.triggered == 'true'
+        run: |
+          echo "found it"
