@@ -28,4 +28,4 @@ jobs:
 
       - name: Do something
         run: |
-          echo "${{get-pr-ref.outputs.result}}"
+          echo "${{steps.get-pr-ref.outputs.result}}"
