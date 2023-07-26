@@ -16,4 +16,4 @@ jobs:
     steps:
       - name: Write about results
         run: |
-          echo ${{ env.GITHUB_EVENT_PATH }}
+          echo ${{ github.event.payload }}
