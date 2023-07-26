@@ -1,15 +1,12 @@
-name: Workflow
+name: workflow-1
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [main]
 
 jobs:
   run-workflow:
     runs-on: ubuntu-latest
     steps:
-      - name: "Execute test"
+      - name: Check checkout result
         run: |
-          echo "test executed"
-          
+          cat file.txt
