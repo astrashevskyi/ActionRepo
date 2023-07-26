@@ -7,6 +7,8 @@ jobs:
   run-workflow:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
       - name: Check checkout result
         run: |
           cat file.txt
