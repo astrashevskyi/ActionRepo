@@ -10,11 +10,10 @@ permissions:
 
 env:
   REF: ${{ github.event.issue.pull_request.head.ref }}
-  PR_TEST_TRIGGER: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')}}
 
 jobs:
   dispatch-test-workflow:
-    if: ${{env.PR_TEST_TRIGGER}}
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
 #      - uses: actions/checkout@v3
