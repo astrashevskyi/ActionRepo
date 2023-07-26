@@ -19,7 +19,7 @@ jobs:
         if: always()
         with:
           sha: ${{ github.event.workflow_run.head_sha }}
-#          token: ${{ secrets.GIT_TOKEN_CI }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           name: Test XYZ
           conclusion: ${{ github.event.workflow_run.conclusion }}
           output: |
