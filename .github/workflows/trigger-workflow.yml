@@ -2,23 +2,25 @@ name: trigger-workflow
 run-name: "PR commands processing"
 
 on:
-  pull_request:
-    types: [opened]
   issue_comment:
     types: [created]
 
 permissions:
   actions: write
 
+env:
+  REF: ${{ github.event.issue.pull_request.head.ref }}
+  PR_TEST_TRIGGER: ${{ github.event.issue.pull_request && contains(github.event.comment.body, '/deploy')}}
+
 jobs:
-  dispatch-workflow:
+  dispatch-test-workflow:
+    if: ${{env.PR_TEST_TRIGGER}}
     runs-on: ubuntu-latest
     steps:
-      - uses: khan/pull-request-comment-trigger@v1.1.0
-        id: check
-        with:
-          trigger: '@test'
+#      - uses: actions/checkout@v3
+#        with:
+#          ref: ${{ env.REF }}
       - name: Do something
         if: steps.check.outputs.triggered == 'true'
         run: |
-          echo ${{ github.sha }}
+          echo ${{ env.REF }}
