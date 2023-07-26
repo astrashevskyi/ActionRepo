@@ -14,3 +14,13 @@ jobs:
       - name: Write about results
         run: |
           echo ${{ github.event.workflow_run.conclusion == 'success' }}
+      - name: Add check
+        uses: LouisBrunner/checks-action@v1.6.1
+        if: always()
+        with:
+          sha: ${{ github.event.workflow_run.head_sha }}
+          token: ${{ secrets.GIT_TOKEN_CI }}
+          name: Test XYZ
+          conclusion: ${{ github.event.workflow_run.conclusion }}
+          output: |
+            {"summary":"Some summary"}
