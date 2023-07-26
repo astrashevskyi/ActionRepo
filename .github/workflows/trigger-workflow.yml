@@ -13,23 +13,30 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-      - name: Get PR head SHA
-        id: get-pr-sha
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const response = await github.rest.pulls.get({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: ${{ github.event.issue.number }}
-            });
-            return response.data.head.sha;
-          result-encoding: string
-
+#      - name: Get PR head SHA
+#        id: get-pr-sha
+#        uses: actions/github-script@v6
+#        with:
+#          script: |
+#            const response = await github.rest.pulls.get({
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              pull_number: ${{ github.event.issue.number }}
+#            });
+#            return response.data.head.sha;
+#          result-encoding: string
+#
+#      - name: Checkout PR branch
+#        uses: actions/checkout@v3
+#        with:
+#          ref: ${{steps.get-pr-ref.outputs.result}}
+      - name: Get PR branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
       - name: Checkout PR branch
         uses: actions/checkout@v3
         with:
-          ref: ${{steps.get-pr-ref.outputs.result}}
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
       - name: Check checkout result
         run: |
           cat file.txt
