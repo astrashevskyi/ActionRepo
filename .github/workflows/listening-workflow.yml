@@ -1,5 +1,5 @@
-name: trigger-workflow
-run-name: "PR commands processing"
+name: listening-workflow
+run-name: "Workflow completion processing"
 
 on:
   workflow_run:
@@ -16,4 +16,4 @@ jobs:
     steps:
       - name: Write about results
         run: |
-        echo: ${{ env.GITHUB_EVENT_PATH }}
+          cat ${{ env.GITHUB_EVENT_PATH }}
