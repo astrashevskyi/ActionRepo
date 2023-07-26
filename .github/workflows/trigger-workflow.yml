@@ -23,10 +23,11 @@ jobs:
       - name: Dispatch event for workflow-1.yml
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GIT_TOKEN_CI }}
           script: |
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: "workflow-1.yml",
+              workflow_id: "workflow-1",
               ref: "${{ steps.comment-branch.outputs.head_ref }}"
             });
