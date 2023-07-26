@@ -20,6 +20,5 @@ jobs:
 #        with:
 #          ref: ${{ env.REF }}
       - name: Do something
-        if: steps.check.outputs.triggered == 'true'
         run: |
           echo ${{ env.REF }}
