@@ -4,6 +4,9 @@ run-name: "PR commands processing"
 on:
   issue_comment:
     types: [ created ]
+  push
+    branches:
+      - 'main'
 
 permissions:
   actions: write
