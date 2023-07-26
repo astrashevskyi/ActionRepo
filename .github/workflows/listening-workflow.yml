@@ -7,9 +7,6 @@ on:
     types:
       - completed
 
-permissions:
-  actions: write
-
 jobs:
   process-workflow-completion:
     runs-on: ubuntu-latest
