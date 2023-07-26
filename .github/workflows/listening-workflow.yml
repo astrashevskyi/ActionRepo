@@ -16,4 +16,4 @@ jobs:
     steps:
       - name: Write about results
         run: |
-          cat ${{ env.GITHUB_EVENT_PATH }}
+          echo ${{ env.GITHUB_EVENT_PATH }}
