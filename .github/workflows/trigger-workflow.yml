@@ -8,17 +8,24 @@ on:
 permissions:
   actions: write
 
-env:
-  REF: ${{ github.event.issue.number }}
-
 jobs:
   dispatch-test-workflow:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-#      - uses: actions/checkout@v3
-#        with:
-#          ref: ${{ env.REF }}
+      - name: Add comment to PR
+        id: get-pr-ref
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              context.repo.owner,
+              context.repo.repo,
+              github.event.issue.number
+            });
+            return pr.head.ref
+          result-encoding: string
+
       - name: Do something
         run: |
-          echo ${{ env.REF }}
+          echo "${{get-pr-ref.outputs.result}}"
