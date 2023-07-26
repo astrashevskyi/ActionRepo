@@ -13,8 +13,8 @@ jobs:
     if: github.event.issue.pull_request && contains(github.event.comment.body, '/test')
     runs-on: ubuntu-latest
     steps:
-      - name: Add comment to PR
-        id: get-pr-ref
+      - name: Get PR head SHA
+        id: get-pr-sha
         uses: actions/github-script@v6
         with:
           script: |
@@ -26,6 +26,10 @@ jobs:
             return response.data.head.sha;
           result-encoding: string
 
-      - name: Do something
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{steps.get-pr-ref.outputs.result}}
+      - name: Check checkout result
         run: |
-          echo "${{steps.get-pr-ref.outputs.result}}"
+          cat file.txt
