@@ -36,7 +36,7 @@ jobs:
         if: always()
         with:
           script: |
-            let pr_numbers = context.event.workflow_run.pull_requests.map(a => a.number)
+            let pr_numbers = context.payload.pull_requests.map(a => a.number)
             const name = '${{ github.event.workflow_run.name }}';
             const url = '${{ github.event.workflow_run.html_url }}';
             const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
