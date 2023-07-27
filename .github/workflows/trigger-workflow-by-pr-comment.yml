@@ -19,7 +19,7 @@ jobs:
         id: check-if-mergeable
         with:
           script: |
-            const pr = github.rest.pulls.get({
+            const pr = await github.rest.pulls.get({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: ${{ github.event.issue.number }}
