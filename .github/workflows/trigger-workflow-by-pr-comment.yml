@@ -42,6 +42,9 @@ jobs:
       - name: Cancel Workflow if not mergeable
         if: ${{steps.check-if-mergeable.outputs.result == 'false'}}
         uses: vishnudxb/cancel-workflow@v1.2
+        with:
+          repo: ${{ github.repository }}
+          workflow_id: ${{ github.run_id }}
 
       - name: Update PR branch
         uses: actions/github-script@v6
