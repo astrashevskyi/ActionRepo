@@ -36,17 +36,17 @@ jobs:
         if: always()
         with:
           script: |
-            let pr_numbers = github.event.workflow_run.pull_requests.map(a => a.number)
+            let pr_numbers = JSON.parse(${{github.event.workflow_run}}).pull_requests.map(a => a.number)
             const name = '${{ github.event.workflow_run.name }}';
             const url = '${{ github.event.workflow_run.html_url }}';
             const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
             const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
             
-            pr_numbers.forEach(pr => {
-                await github.rest.issues.createComment({
-                  issue_number: pr,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: body
-                })
+            for(const pr of pr_numbers) {
+              await github.rest.issues.createComment({
+                issue_number: pr,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              })
             }
