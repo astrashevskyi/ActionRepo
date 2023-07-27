@@ -27,7 +27,7 @@ jobs:
             return pr.data.mergeable;
           result-encoding: string
 
-      - name: Add comment to PR if not mergeable
+      - name: Add comment to PR if not mergeable and exit
         if: ${{steps.check-if-mergeable.outputs.result == 'false'}}
         uses: actions/github-script@v6
         with:
@@ -38,13 +38,7 @@ jobs:
               repo: context.repo.repo,
               body: 'PR branch is not mergeable! ⛔'
             })
-
-      - name: Cancel Workflow if not mergeable
-        if: ${{steps.check-if-mergeable.outputs.result == 'false'}}
-        uses: vishnudxb/cancel-workflow@v1.2
-        with:
-          repo: ${{ github.repository }}
-          workflow_id: ${{ github.run_id }}
+            process.exit(1)
 
       - name: Update PR branch
         uses: actions/github-script@v6
