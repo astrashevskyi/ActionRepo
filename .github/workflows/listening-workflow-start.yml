@@ -1,11 +1,9 @@
 name: listening-workflow
-run-name: "Workflow completion processing"
+run-name: "Workflow run processing"
 
 on:
   workflow_run:
-    workflows: ["workflow-2"]
-    types:
-      - completed
+    workflows: ["workflow-1"]
 
 jobs:
   process-workflow-completion:
