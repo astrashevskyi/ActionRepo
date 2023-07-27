@@ -24,3 +24,11 @@ jobs:
           conclusion: ${{ github.event.workflow_run.conclusion }}
           output: |
             {"summary":"Some summary"}
+      - name: Run the action
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Test run'
+          description: 'Passed'
+          state: 'success'
+          sha: ${{ github.event.workflow_run.head_sha }}
