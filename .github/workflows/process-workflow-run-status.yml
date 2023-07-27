@@ -6,9 +6,11 @@ on:
     workflows: ["workflow-1"]
     types:
       - completed
+      - requested
 
 jobs:
   process-workflow-completion:
+    if: ${{ github.event.workflow_run.status == 'completed' }}
     runs-on: ubuntu-latest
     steps:
       - name: Map run conclusion to commit state
@@ -41,6 +43,28 @@ jobs:
             const url = '${{ github.event.workflow_run.html_url }}';
             const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
             const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
+
+            for(const pr of pr_numbers) {
+              await github.rest.issues.createComment({
+                issue_number: pr,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              })
+            }
+  process-workflow-requested:
+    if: ${{ github.event.workflow_run.status == 'requested' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add comment to PR
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          script: |
+            let pr_numbers = context.payload.workflow_run.pull_requests.map(a => a.number);
+            const name = '${{ github.event.workflow_run.name }}';
+            const url = '${{ github.event.workflow_run.html_url }}';
+            const body = `${name}: run requested\n${url}`;
 
             for(const pr of pr_numbers) {
               await github.rest.issues.createComment({
