@@ -4,31 +4,24 @@ run-name: "Workflow run processing"
 on:
   workflow_run:
     workflows: ["workflow-1"]
+    types:
+      - completed
 
 jobs:
   process-workflow-completion:
     runs-on: ubuntu-latest
     steps:
-      - name: Map run status to commit state
-        if: github.event.workflow_run.status != 'completed'
-        run: |
-          case ${{ github.event.workflow_run.status }} in
-             requested|queued|in_progress|pending|waiting)
-                result=pending;;
-          esac
-          echo "COMMIT_STATE=$result" >> $GITHUB_ENV
       - name: Map run conclusion to commit state
-        if: github.event.workflow_run.status == 'completed'
         run: |
-          case ${{ github.event.workflow_run.conclusion }} in
-             success)
-                result=success;;
-             failure|neutral|cancelled|timed_out|action_required|stale|null|skipped)
-                result=failure;;
-             startup_failure)
-                result=error;;
-          esac
-          echo "COMMIT_STATE=$result" >> $GITHUB_ENV
+         case ${{ github.event.workflow_run.conclusion }} in
+            success)
+               result=success;;
+            failure|neutral|cancelled|timed_out|action_required|stale|null|skipped)
+               result=failure;;
+            startup_failure)
+               result=error;;
+         esac
+         echo "COMMIT_STATE=$result" >> $GITHUB_ENV
 
       - name: Set commit status
         uses: Sibz/github-status-action@v1
@@ -39,3 +32,19 @@ jobs:
           state: ${{ env.COMMIT_STATE }}
           target_url: ${{ github.event.workflow_run.html_url }}
           sha: ${{ github.event.workflow_run.head_sha }}
+#      - name: Add comment to PR
+#        uses: actions/github-script@v6
+#        if: always()
+#        with:
+#          script: |
+#            const name = '${{ github.event.workflow_run.name }}';
+#            const url = '${{ github.event.workflow_run.html_url }}';
+#            const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
+#            const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
+#
+#            await github.rest.issues.createComment({
+#              issue_number: context.issue.number,
+#              owner: context.repo.owner,
+#              repo: context.repo.repo,
+#              body: body
+#            })
