@@ -1,0 +1,35 @@
+name: listening-workflow
+run-name: "Workflow completion processing"
+
+on:
+  workflow_run:
+    workflows: ["workflow-2"]
+    types:
+      - completed
+
+jobs:
+  process-workflow-completion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Map run conclusion to commit status
+        id: map-conclusion-to-status
+        run: |
+          case ${{ github.event.workflow_run.conclusion }} in
+             success)
+                result=success;;
+             failure|neutral|cancelled|timed_out|action_required|stale|null|skipped)
+                result=failure;;
+             startup_failure)
+                result=error;;
+          esac
+          echo "status=$result" >> $GITHUB_OUTPUT
+
+      - name: Set commit status
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: ${{ github.event.workflow_run.name }}
+          description: ${{ github.event.workflow_run.display_title }}
+          state: ${{ steps.map-conclusion-to-status.outputs.status }}
+          target_url: ${{ github.event.workflow_run.html_url }}
+          sha: ${{ github.event.workflow_run.head_sha }}
