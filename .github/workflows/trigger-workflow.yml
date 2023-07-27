@@ -16,10 +16,15 @@ jobs:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
-      - name: Checkout PR branch
-        uses: actions/checkout@v3
+      - name: Update PR branch
+        uses: actions/github-script@v6
         with:
-          ref: ${{ steps.comment-branch.outputs.head_ref }}
+          script: |
+            await github.rest.pulls.updateBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.issue.number }},
+            });
       - name: Dispatch event for workflow-1.yml
         uses: actions/github-script@v6
         with:
