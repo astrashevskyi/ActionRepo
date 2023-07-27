@@ -19,6 +19,7 @@ jobs:
       - name: Update PR branch
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.GIT_TOKEN_CI }}
           script: |
             await github.rest.pulls.updateBranch({
               owner: context.repo.owner,
