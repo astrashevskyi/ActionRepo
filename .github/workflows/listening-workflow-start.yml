@@ -31,22 +31,25 @@ jobs:
           state: ${{ env.COMMIT_STATE }}
           target_url: ${{ github.event.workflow_run.html_url }}
           sha: ${{ github.event.workflow_run.head_sha }}
+      - name: Show pullrequests
+        run: |
+          echo ${{ github.event.workflow_run.pull_requests[0].number }}
       - name: Add comment to PR
         uses: actions/github-script@v6
         if: always()
         with:
           script: |
-            let pr_numbers = github.event.workflow_run.pull_requests.map(a => a.number)
+            let pr_numbers = [${{ github.event.workflow_run.pull_requests[0].number }}]
             const name = '${{ github.event.workflow_run.name }}';
             const url = '${{ github.event.workflow_run.html_url }}';
             const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
             const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
-            
-            pr_numbers.forEach(pr => {
-                await github.rest.issues.createComment({
-                  issue_number: pr,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: body
-                })
+
+            for(const pr of pr_numbers) {
+              await github.rest.issues.createComment({
+                issue_number: pr,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              })
             }
