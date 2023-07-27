@@ -27,14 +27,12 @@ jobs:
               pull_number: ${{ github.event.issue.number }},
             });
 
-            for(const pr of pr_numbers) {
-              await github.rest.issues.createComment({
-                issue_number: ${{ github.event.issue.number }},
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: 'PR branch updated 🔃'
-              })
-            }
+            await github.rest.issues.createComment({
+              issue_number: ${{ github.event.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'PR branch updated 🔃'
+            })
       - name: Dispatch event for workflow-1.yml
         uses: actions/github-script@v6
         with:
