@@ -6,6 +6,7 @@ on:
     types: [created]
 
 permissions:
+  issues: write
   actions: write
 
 jobs:
@@ -16,6 +17,10 @@ jobs:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
+
+      - name: Check branch status
+        run: |
+
       - name: Update PR branch
         uses: actions/github-script@v6
         with:
@@ -26,6 +31,10 @@ jobs:
               repo: context.repo.repo,
               pull_number: ${{ github.event.issue.number }},
             });
+      - name: Add comment to PR
+        uses: actions/github-script@v6
+        with:
+          script: |
             await github.rest.issues.createComment({
               issue_number: ${{ github.event.issue.number }},
               owner: context.repo.owner,
