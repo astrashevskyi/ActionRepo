@@ -4,8 +4,10 @@ run-name: "Workflow completion processing"
 on:
   workflow_run:
     workflows: ["workflow-1"]
-    types:
-      - completed
+#    types:
+#      - completed
+#      - requested
+#      - in_progress
 
 jobs:
   process-workflow-completion:
