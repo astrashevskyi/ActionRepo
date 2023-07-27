@@ -40,7 +40,7 @@ jobs:
         with:
           script: |
             //let pr_numbers = [${{ github.event.workflow_run.pull_requests[0].number }}]
-            let pr_numbers = [context.payload.workflow_run.pull_requests[0].number }}]
+            let pr_numbers = [context.payload.workflow_run.pull_requests[0].number]
             const name = '${{ github.event.workflow_run.name }}';
             const url = '${{ github.event.workflow_run.html_url }}';
             const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
