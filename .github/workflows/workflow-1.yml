@@ -11,4 +11,4 @@ jobs:
         uses: actions/checkout@v3
       - name: Check checkout result
         run: |
-          exit 1
+          cat file.txt
