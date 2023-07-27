@@ -25,10 +25,10 @@ jobs:
                 pull_number: ${{ github.event.issue.number }}
             });
             return pr.data.mergeable;
-          result-encoding: boolean
+          result-encoding: string
 
       - name: Add comment to PR if not mergeable
-        if: ${{steps.check-if-mergeable.outputs.result == false}}
+        if: ${{steps.check-if-mergeable.outputs.result == 'false'}}
         uses: actions/github-script@v6
         with:
           script: |
@@ -40,7 +40,7 @@ jobs:
             })
 
       - name: Cancel Workflow if not mergeable
-        if: ${{steps.check-if-mergeable.outputs.result == false}}
+        if: ${{steps.check-if-mergeable.outputs.result == 'false'}}
         uses: vishnudxb/cancel-workflow@v1.2
 
       - name: Update PR branch
