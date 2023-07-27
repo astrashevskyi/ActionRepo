@@ -14,8 +14,33 @@ jobs:
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
 
-      - name: Check branch status
-        run: |
+      - name: Check if PR is mergeable
+        uses: actions/github-script@v6
+        id: check-if-mergeable
+        with:
+          script: |
+            const pr = github.rest.pulls.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: ${{ github.event.issue.number }}
+            });
+            return pr.data.mergeable;
+
+      - name: Add comment to PR if not mergeable
+        if: ${{steps.check-if-mergeable.outputs.result == false}}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: ${{ github.event.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'PR branch is not mergeable! ⛔'
+            })
+
+      - name: Cancel Workflow if not mergeable
+        if: ${{steps.check-if-mergeable.outputs.result == false}}
+        uses: vishnudxb/cancel-workflow@v1.2
 
       - name: Update PR branch
         uses: actions/github-script@v6
