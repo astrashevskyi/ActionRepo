@@ -42,7 +42,7 @@ jobs:
             const name = '${{ github.event.workflow_run.name }}';
             const url = '${{ github.event.workflow_run.html_url }}';
             const success = '${{ github.event.workflow_run.conclusion }}' === 'success';
-            const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\n${url}`;
+            const body = `${name}: ${success ? 'succeeded ✅' : 'failed ❌'}\nsee ${url}`;
 
             for(const pr of pr_numbers) {
               await github.rest.issues.createComment({
@@ -64,7 +64,7 @@ jobs:
             let pr_numbers = context.payload.workflow_run.pull_requests.map(a => a.number);
             const name = '${{ github.event.workflow_run.name }}';
             const url = '${{ github.event.workflow_run.html_url }}';
-            const body = `${name}: run requested\n${url}`;
+            const body = `${name}: run started\nsee ${url}`;
 
             for(const pr of pr_numbers) {
               await github.rest.issues.createComment({
