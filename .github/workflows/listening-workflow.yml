@@ -29,11 +29,11 @@ jobs:
         run: |
           case ${{ github.event.workflow_run.conclusion }} in
              success)
-                result=success
+                result=success;;
              failure|neutral|cancelled|timed_out|action_required|stale|null|skipped)
-                result=failure
+                result=failure;;
              startup_failure)
-                result=error
+                result=error;;
           esac
           echo "status=$result" >> $GITHUB_OUTPUT
 
