@@ -16,10 +16,14 @@ jobs:
       - name: Get PR branch
         uses: xt0rted/pull-request-comment-branch@v1
         id: comment-branch
+
+      - name: Check branch status
+        run: |
+
       - name: Update PR branch
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GIT_TOKEN_CI }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.pulls.updateBranch({
               owner: context.repo.owner,
