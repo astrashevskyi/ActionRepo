@@ -1,5 +1,5 @@
 name: trigger-workflow
-run-name: "PR commands processing"
+run-name: "PR comments processing"
 
 on:
   issue_comment:
