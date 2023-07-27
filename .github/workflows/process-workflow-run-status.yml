@@ -37,7 +37,6 @@ jobs:
         uses: actions/github-script@v6
         if: always()
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             let pr_numbers = context.payload.workflow_run.pull_requests.map(a => a.number);
             const name = '${{ github.event.workflow_run.name }}';
@@ -61,7 +60,6 @@ jobs:
         uses: actions/github-script@v6
         if: always()
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             let pr_numbers = context.payload.workflow_run.pull_requests.map(a => a.number);
             const name = '${{ github.event.workflow_run.name }}';
