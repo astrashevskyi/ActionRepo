@@ -25,6 +25,7 @@ jobs:
                 pull_number: ${{ github.event.issue.number }}
             });
             return pr.data.mergeable;
+          result-encoding: boolean
 
       - name: Add comment to PR if not mergeable
         if: ${{steps.check-if-mergeable.outputs.result == false}}
