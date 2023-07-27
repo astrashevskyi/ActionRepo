@@ -28,7 +28,6 @@ jobs:
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: ${{ github.event.workflow_run.name }}
-          description: ${{ github.event.workflow_run.display_title }}
           state: ${{ env.COMMIT_STATE }}
           target_url: ${{ github.event.workflow_run.html_url }}
           sha: ${{ github.event.workflow_run.head_sha }}
