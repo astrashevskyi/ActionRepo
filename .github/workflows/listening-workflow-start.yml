@@ -11,8 +11,16 @@ jobs:
   process-workflow-completion:
     runs-on: ubuntu-latest
     steps:
-      - name: Map run conclusion to commit status
-        id: map-conclusion-to-status
+      - name: Map run status to commit state
+        if: github.event.workflow_run.status != 'completed'
+        run: |
+          case ${{ github.event.workflow_run.status }} in
+             requested|queued|in_progress|pending|waiting)
+                result=pending;;
+          esac
+          echo "COMMIT_STATE=$result" >> $GITHUB_ENV
+      - name: Map run conclusion to commit state
+        if: github.event.workflow_run.status == 'completed'
         run: |
           case ${{ github.event.workflow_run.conclusion }} in
              success)
@@ -22,7 +30,7 @@ jobs:
              startup_failure)
                 result=error;;
           esac
-          echo "status=$result" >> $GITHUB_OUTPUT
+          echo "COMMIT_STATE=$result" >> $GITHUB_ENV
 
       - name: Set commit status
         uses: Sibz/github-status-action@v1
@@ -30,6 +38,6 @@ jobs:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: ${{ github.event.workflow_run.name }}
           description: ${{ github.event.workflow_run.display_title }}
-          state: ${{ steps.map-conclusion-to-status.outputs.status }}
+          state: ${{ env.COMMIT_STATE }}
           target_url: ${{ github.event.workflow_run.html_url }}
           sha: ${{ github.event.workflow_run.head_sha }}
