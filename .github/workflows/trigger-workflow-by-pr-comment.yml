@@ -45,16 +45,13 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            //const { exec }  = require("child_process");
+            const execa  = require('execa');
             const pr_response = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: ${{ github.event.issue.number }}
             });
-            let result;
-            exec(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base.sha}`, (err, stdout, stderr) => {
-              result = stdout;
-            });
+            const result = await execa(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base.sha}`).stdout;
             return result == '' ? true : false;
           result-encoding: string
 
