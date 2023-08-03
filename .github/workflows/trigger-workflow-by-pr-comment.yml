@@ -50,8 +50,9 @@ jobs:
               repo: context.repo.repo,
               pull_number: ${{ github.event.issue.number }}
             });
+            await exec.exec(`git fetch origin ${pr_response.data.head.sha}`);
             let execOutput = await exec.getExecOutput(`git rev-list ${pr_response.data.head.sha}`)
-            return !execOutput.stdout.includes(pr_response.data.base.sha);
+            return execOutput.stdout.includes(pr_response.data.base.sha);
           result-encoding: string
 
       - name: Update PR branch
