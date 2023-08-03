@@ -46,7 +46,7 @@ jobs:
         with:
           script: |
             //const { exec }  = require("child_process");
-            const pr_response = await octokit.rest.pulls.get({
+            const pr_response = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: ${{ github.event.issue.number }}
