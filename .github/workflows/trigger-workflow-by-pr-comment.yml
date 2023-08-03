@@ -39,13 +39,13 @@ jobs:
               body: 'PR branch is not mergeable! ⛔'
             })
             process.exit(1)
-
+      - run: npm install execa
       - name: Check if PR needs to be updated
         id: check-if-needs-update
         uses: actions/github-script@v6
         with:
           script: |
-            const execa  = require('execa');
+            const execa = require('execa');
             const pr_response = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
