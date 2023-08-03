@@ -52,8 +52,7 @@ jobs:
               pull_number: ${{ github.event.issue.number }}
             });
             let result;
-            exec(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base.sha}`, (err, stdout, stderr) 
-            => {
+            exec(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base.sha}`, (err, stdout, stderr) => {
               result = stdout;
             }
             return result == '' ? true : false;
