@@ -42,6 +42,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - run: npm ci
       - run: npm install execa
       - name: Check if PR needs to be updated
         id: check-if-needs-update
