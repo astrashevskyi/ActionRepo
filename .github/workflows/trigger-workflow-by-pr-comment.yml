@@ -50,8 +50,9 @@ jobs:
               repo: context.repo.repo,
               pull_number: ${{ github.event.issue.number }}
             });
-            const result = await exec.exec(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base
-            .sha}`).stdout;
+            await exec.exec(`git fetch origin ${pr_response.data.head.sha}`);
+            await exec.exec(`git fetch origin ${pr_response.data.base.sha}`);
+            const result = await exec.exec(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base.sha}`).stdout;
             return result == '' ? true : false;
           result-encoding: string
 
