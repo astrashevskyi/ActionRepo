@@ -39,8 +39,25 @@ jobs:
               body: 'PR branch is not mergeable! ⛔'
             })
             process.exit(1)
+      - uses: actions/checkout@v3
+      - name: Check if PR needs to be updated
+        id: check-if-needs-update
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr_response = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.issue.number }}
+            });
+            await exec.exec(`git fetch origin ${pr_response.data.head.sha}`);
+            await exec.exec(`git fetch origin ${pr_response.data.base.sha}`);
+            let execOutput = await exec.getExecOutput(`git rev-list ${pr_response.data.head.sha}`)
+            return execOutput.stdout.includes(pr_response.data.base.sha);
+          result-encoding: string
 
       - name: Update PR branch
+        if: ${{steps.check-if-needs-update.outputs.result == 'true'}}
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GIT_TOKEN_CI }}
@@ -50,7 +67,9 @@ jobs:
               repo: context.repo.repo,
               pull_number: ${{ github.event.issue.number }},
             });
-      - name: Add comment to PR
+
+      - name: Add comment to PR on update
+        if: ${{steps.check-if-needs-update.outputs.result == 'true'}}
         uses: actions/github-script@v6
         with:
           script: |
