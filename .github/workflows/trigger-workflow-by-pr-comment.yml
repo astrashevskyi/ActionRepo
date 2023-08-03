@@ -52,8 +52,8 @@ jobs:
             });
             await exec.exec(`git fetch origin ${pr_response.data.head.sha}`);
             await exec.exec(`git fetch origin ${pr_response.data.base.sha}`);
-            const result = await exec.exec(`git rev-list ${pr_response.data.head.sha} | grep ${pr_response.data.base.sha}`).stdout;
-            return result == '' ? true : false;
+            return await exec.exec(`git rev-list ${pr_response.data.head.sha}`).stdout
+              .contains(pr_response.data.base.sha);
           result-encoding: string
 
       - name: Update PR branch
