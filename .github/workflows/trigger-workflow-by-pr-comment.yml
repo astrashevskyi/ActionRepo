@@ -9,6 +9,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  id-token: write
   statuses: write
   
 jobs:
@@ -67,7 +68,7 @@ jobs:
         if: ${{steps.check-if-needs-update.outputs.result == 'true'}}
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.pulls.updateBranch({
               owner: context.repo.owner,
@@ -90,7 +91,7 @@ jobs:
       - name: Dispatch event for workflow-1.yml
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
