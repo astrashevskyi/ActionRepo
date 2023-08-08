@@ -8,6 +8,14 @@ on:
       - completed
       - in_progress
 
+permissions:
+  id-token: write
+  contents: read
+  actions: write
+  issues: write
+  pull-requests: read
+  statuses: write
+
 jobs:
   process-workflow-completion:
     if: ${{ github.event.workflow_run.status == 'completed' }}
