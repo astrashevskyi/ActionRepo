@@ -89,6 +89,8 @@ jobs:
             })
 
   workflow1_run:
+    needs: dispatch-test-workflow
+    if: ${{ success() }}
     uses: ./.github/workflows/workflow-1.yml
 
       # - name: Dispatch event for workflow-1.yml
