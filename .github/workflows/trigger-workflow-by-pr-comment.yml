@@ -88,14 +88,17 @@ jobs:
               body: 'PR branch updated 🔃'
             })
 
-      - name: Dispatch event for workflow-1.yml
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            await github.rest.actions.createWorkflowDispatch({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              workflow_id: "workflow-1.yml",
-              ref: "${{ steps.comment-branch.outputs.head_ref }}"
-            });
+  workflow1_run:
+    uses: ./.github/workflows/workflow-1.yml
+
+      # - name: Dispatch event for workflow-1.yml
+      #   uses: actions/github-script@v6
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       await github.rest.actions.createWorkflowDispatch({
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         workflow_id: "workflow-1.yml",
+      #         ref: "${{ steps.comment-branch.outputs.head_ref }}"
+      #       });
