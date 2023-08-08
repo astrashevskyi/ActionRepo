@@ -1,7 +1,7 @@
-name: workflow-2
+name: workflow-1
 
 on:
-  workflow_dispatch:
+  workflow_call:
 #  pull_request:
 #    branches:
 #      - main
