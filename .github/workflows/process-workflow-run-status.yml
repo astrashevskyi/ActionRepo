@@ -3,18 +3,10 @@ run-name: "Workflow run processing"
 
 on:
   workflow_run:
-    workflows: ["trigger-workflow"]
+    workflows: ["workflow-2"]
     types:
       - completed
       - in_progress
-
-permissions:
-  id-token: write
-  contents: read
-  actions: write
-  issues: write
-  pull-requests: read
-  statuses: write
 
 jobs:
   process-workflow-completion:
