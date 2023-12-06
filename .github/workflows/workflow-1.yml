@@ -28,7 +28,7 @@ jobs:
           tests_tags="PRSmoke"
           ;;
           esac                
-          echo "tags=tests_tags" >> $GITHUB_OUTPUT
+          echo "tags=$tests_tags" >> $GITHUB_OUTPUT
   run-tests:
     needs: matrix_prep
     strategy:
