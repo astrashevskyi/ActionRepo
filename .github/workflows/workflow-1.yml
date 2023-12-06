@@ -19,14 +19,11 @@ jobs:
           # for main branch run all tests, otherwise PRSmoke
           case ${{ github.base_ref }} in
           main)
-          tests_tags="main"
-          ;;
+          tests_tags="main";;
           development)
-          tests_tags="PRSmoke"
-          ;;
+          tests_tags="PRSmoke";;
           *)
-          tests_tags="PRSmoke"
-          ;;
+          tests_tags="PRSmoke";;
           esac                
           echo "tags=$tests_tags" >> $GITHUB_OUTPUT
   run-tests:
