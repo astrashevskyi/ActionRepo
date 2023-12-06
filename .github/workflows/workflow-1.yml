@@ -1,19 +1,22 @@
-name: workflow-2
+name: PR triggered workflow
 
 on:
   workflow_dispatch:
-#  pull_request:
-#    branches:
-#      - main
+  pull_request:
+    branches:
+      - main
+      - development
 
 
 jobs:
-  run-workflow:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout PR branch
-        uses: actions/checkout@v3
-      - name: Check checkout result
-        run: |
-          sleep 10
-          cat file.txt
+  run-tests:
+    strategy:
+      max-parallel: 3
+      fail-fast: false
+      matrix:
+        include:
+          # for main branch run all tests, otherwise PRSmoke
+          - tags: ${{ github.base_ref == 'main' && '' || 'PRSmoke' }}
+    uses: ./.github/workflows/workflow.yml
+    with:
+      tags: ${{ matrix.tags }}

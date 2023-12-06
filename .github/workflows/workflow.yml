@@ -1,0 +1,24 @@
+name: "Parameterized workflow"
+
+on:
+  workflow_call:
+    inputs:
+      tags:
+        type: string
+        required: false
+
+permissions:
+  id-token: write
+  actions: write
+  contents: read
+  checks: write
+
+jobs:
+  build:
+    name: ${{ inputs.name }}
+    timeout-minutes: 120
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env values
+        run: |
+          echo TAGS ARE: ${{ inputs.tags }}          
