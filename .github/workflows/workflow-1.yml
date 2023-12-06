@@ -16,7 +16,7 @@ jobs:
     steps:
       - id: set-tags
         run: |
-          base_branch=${{ github.base_ref && github.base_ref || "not_a_pr_branch" }}
+          base_branch=${{ github.base_ref && github.base_ref || 'not_a_pr_branch' }}
           
           # for main branch run all tests, otherwise PRSmoke
           if [ $base_branch = main ];  
