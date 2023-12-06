@@ -9,14 +9,33 @@ on:
 
 
 jobs:
+  matrix_prep:
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.set-tags.outputs.tags }}
+    steps:
+      - id: set-tags
+        run: |
+          # for main branch run all tests, otherwise PRSmoke
+          case ${{ github.base_ref }} in
+          main)
+          tests_tags=""
+          ;;
+          development)
+          tests_tags="PRSmoke"
+          ;;
+          *)
+          tests_tags="PRSmoke"
+          ;;
+          esac                
+          echo "tags=tests_tags" >> $GITHUB_OUTPUT
   run-tests:
     strategy:
       max-parallel: 3
       fail-fast: false
       matrix:
         include:
-          # for main branch run all tests, otherwise PRSmoke
-          - tags: ${{ github.base_ref != 'main' && 'PRSmoke' || '-dummy-negate-tag' }}
+          - tags: ${{ matrix.tags }}
     uses: ./.github/workflows/workflow.yml
     with:
       tags: ${{ matrix.tags }}
