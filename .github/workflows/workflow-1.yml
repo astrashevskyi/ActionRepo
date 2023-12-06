@@ -19,4 +19,4 @@ jobs:
           - tags: ${{ github.base_ref == 'main' && '' || 'PRSmoke' }}
     uses: ./.github/workflows/workflow.yml
     with:
-      tags: ${{ github.base_ref == 'main'
+      tags: ${{ github.base_ref }}
