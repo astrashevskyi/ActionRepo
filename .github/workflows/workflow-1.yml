@@ -16,7 +16,7 @@ jobs:
       matrix:
         include:
           # for main branch run all tests, otherwise PRSmoke
-          - tags: ${{ github.base_ref != 'main' && 'PRSmoke' || '' }}
+          - tags: ${{ (github.base_ref != 'main' && 'PRSmoke') || '' }}
     uses: ./.github/workflows/workflow.yml
     with:
       tags: ${{ matrix.tags }}
