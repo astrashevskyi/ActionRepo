@@ -16,16 +16,17 @@ jobs:
     steps:
       - id: set-tags
         run: |
+          base_branch=${{ github.base_ref && github.base_ref || "not_a_pr_branch" }}
+          
           # for main branch run all tests, otherwise PRSmoke
-          case ${{ github.base_ref }} in
-          main)
-          tests_tags="main";;
-          development)
-          tests_tags="PRSmoke";;
-          *)
-          tests_tags="PRSmoke";;
-          esac
-          echo "tags=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          if [ $base_branch = main ];  
+          then
+          tests_tags=""
+          else
+          tests_tags="PRSmoke"
+          fi
+  
+          echo "tags=$tests_tags" >> $GITHUB_OUTPUT
   run-tests:
     needs: matrix_prep
     strategy:
