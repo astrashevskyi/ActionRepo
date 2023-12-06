@@ -19,7 +19,7 @@ jobs:
           # for main branch run all tests, otherwise PRSmoke
           case ${{ github.base_ref }} in
           main)
-          tests_tags=""
+          tests_tags="main"
           ;;
           development)
           tests_tags="PRSmoke"
