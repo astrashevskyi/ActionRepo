@@ -17,7 +17,7 @@ jobs:
   build:
     name: ${{ inputs.name }}
     timeout-minutes: 120
-    runs-on: revenge
+    runs-on: self-hosted
     steps:
       - name: Set env values
         run: |
